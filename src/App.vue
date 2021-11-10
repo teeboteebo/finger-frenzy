@@ -1,32 +1,50 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
-  </div>
+  <v-app>
+    <v-app-bar app color="primary" dark>
+      <div class="d-flex align-center">
+        <!-- icon placeholder -->
+        <h3>Frenzy Fingers</h3>
+      </div>
+
+      <v-spacer></v-spacer>
+      <div class="d-flex align-center">
+        <v-switch
+          inset
+          dense
+          dark
+          hide-details
+          color="secondary"
+          v-model="$vuetify.theme.dark"
+          :append-icon="
+            $vuetify.theme.dark
+              ? 'mdi-moon-waning-crescent'
+              : 'mdi-white-balance-sunny'
+          "
+        ></v-switch>
+      </div>
+    </v-app-bar>
+
+    <v-main>
+      <router-view />
+    </v-main>
+  </v-app>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-</style>
+<script>
+export default {
+  name: "App",
+  data: () => ({
+    //
+  }),
+  watch: {
+    darkMode: function () {
+      localStorage.darkMode = this.$vuetify.theme.dark;
+    },
+  },
+  computed: {
+    darkMode() {
+      return this.$vuetify.theme.dark;
+    },
+  },
+};
+</script>
