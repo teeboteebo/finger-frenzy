@@ -37,11 +37,12 @@ $size: calc(10% - 5px * 2);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 2px;
+  border-radius: 4px;
   position: relative;
   .symbol {
+    font-size: 24px;
     position: absolute;
-    top: calc(50% - 12px);
+    top: calc(50% - 18px);
   }
 }
 </style>

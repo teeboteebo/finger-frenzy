@@ -14,7 +14,7 @@
       <div
         class="overlay"
         :style="{
-          background: `linear-gradient(to left, transparent, ${bgColor})`,
+          background: `linear-gradient(to left, transparent, 20%, ${bgColor}), 80%`,
         }"
       />
     </v-col>
@@ -35,19 +35,15 @@
       <div
         class="overlay"
         :style="{
-          background: `linear-gradient(to right, transparent, ${bgColor})`,
+          background: `linear-gradient(to right, transparent, 20%, ${bgColor}), 80%`,
         }"
       />
     </v-col>
-    {{ $vuetify.theme.currentTheme.background }}
   </v-row>
 </template>
 <script>
 export default {
   name: "LetterCarousel",
-  mounted() {
-    console.log(this.$vuetify.theme.currentTheme);
-  },
   computed: {
     bgColor() {
       return this.$vuetify.theme.dark ? "#121212" : "#fff";

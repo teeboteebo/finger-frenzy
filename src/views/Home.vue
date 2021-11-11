@@ -1,20 +1,25 @@
 <template>
   <v-container class="hello">
     <v-row class="game-header">
-      <v-col v-if="!gameFinished" class="d-flex align-center">
-        <!-- <div>Time: {{ timeElapsed }}ms</div> -->
-        <LetterCarousel />
-      </v-col>
-      <v-col v-else class="d-flex align-center justify-center text-center">
-        <div>
-          <h3>WOW! {{ totalTime }}s</h3>
-          <b v-if="errors > 0">{{ errors }} errors...</b>
+      <v-col v-if="!gameFinished" class="d-flex align-center justify-center">
+        <div style="width: 100%" class="text-center">
+          <LetterCarousel />
           <br />
-          <br />
-          Press <pre>SPACE</pre> to play again
+          <div class="d-flex align-center justify-center">
+            <pre class="d-block">{{ timeElapsed }}s</pre>
+          </div>
         </div>
       </v-col>
+      <v-col v-else class="d-flex align-center justify-center text-center">
+        <pre class="text-center d-block">
+          <h3>🎉{{ timeElapsed }}s🎉</h3>
+          <b class="d-block"><span v-if="errors > 0">{{ errors }} errors...</span><span v-else>Flawless.</span></b>
+          <br />
+          <pre>Press SPACE to play again</pre>
+        </pre>
+      </v-col>
     </v-row>
+
     <v-row>
       <v-col>
         <Keyboard />
@@ -55,16 +60,7 @@ export default {
       return this.$store.state.gameFinished;
     },
     timeElapsed() {
-      const { timeStarted } = this.$store.state;
-
-      const timeElapsed = new Date().getTime() - timeStarted;
-      return timeElapsed;
-    },
-    totalTime() {
-      const { timeStarted, timeEnded } = this.$store.state;
-
-      const totalTime = timeEnded - timeStarted;
-      return totalTime / 1000;
+      return this.$store.state.timeElapsed / 1000;
     },
   },
   components: { LetterCarousel, Keyboard },

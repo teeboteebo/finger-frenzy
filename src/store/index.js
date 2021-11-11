@@ -10,8 +10,10 @@ export default new Vuex.Store({
     alphabet: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
     timeStarted: null,
     timeEnded: null,
+    timeElapsed: 0,
     gameFinished: false,
-    errors: 0
+    errors: 0,
+    interval: null,
   },
   mutations: {
     setCurrentLetter(state, letter) {
@@ -27,16 +29,36 @@ export default new Vuex.Store({
       state.gameFinished = !!bool;
     },
     setErrors(state, val) {
+      if (!state.timeStarted) {
+        return;
+      }
       state.errors = val;
+    },
+    setTimeElapsed(state, val) {
+      state.timeElapsed = val;
     },
   },
   actions: {
+    startTimer(context) {
+      context.state.interval = setInterval(() => {
+        const timeElapsed = new Date().getTime() - context.state.timeStarted;
+
+        context.commit('setTimeElapsed', timeElapsed);
+      }, 10);
+    },
+    clearTimer(context) {
+      clearInterval(context.state.interval);
+    },
     handleKeyDown(context, key) {
+      if (context.state.gameFinished) {
+        return;
+      }
       if (
         key.toLowerCase() === context.state.currentLetter.toLocaleLowerCase()
       ) {
         if (context.state.currentLetter === 'A') {
           context.commit('setTimeStarted', new Date().getTime());
+          context.dispatch('startTimer')
         }
         if (context.state.currentLetter === 'Z') {
           context.dispatch('endGame');
@@ -51,16 +73,21 @@ export default new Vuex.Store({
       return false;
     },
     endGame(context) {
-      //play nicer sound
-      context.commit('setTimeEnded', new Date().getTime());
+      const endTime = new Date().getTime();
+      context.dispatch('clearTimer');
+
+      context.commit('setTimeEnded', endTime);
+      context.commit('setTimeElapsed', endTime - context.state.timeStarted)
       context.commit('setGameFinished', true);
     },
     restart(context) {
+      context.commit('setErrors', 0)
+      context.dispatch('clearTimer')
+      context.commit('setTimeElapsed', 0);
       context.commit('setCurrentLetter', 'A');
       context.commit('setTimeStarted', null);
       context.commit('setTimeEnded', null);
       context.commit('setGameFinished', false);
-      context.commit('setErrors', 0)
 
     },
   },

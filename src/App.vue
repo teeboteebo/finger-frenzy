@@ -11,7 +11,7 @@
         <v-switch
           inset
           dense
-          dark
+          :dark="darkMode"
           hide-details
           color="secondary"
           v-model="$vuetify.theme.dark"
@@ -48,3 +48,8 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+* {
+  font-family: monospace, monospace;
+}
+</style>
