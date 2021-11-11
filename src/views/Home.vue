@@ -55,6 +55,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .game-header {
-  height: 500px;
+  height: 300px;
 }
 </style>
