@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="hello">
     <v-row class="game-header">
       <v-col v-if="!gameFinished" class="d-flex align-center">
         <!-- <div>Time: {{ timeElapsed }}ms</div> -->
@@ -8,10 +8,10 @@
       <v-col v-else class="d-flex align-center justify-center text-center">
         <div>
           <h3>WOW! {{ totalTime }}s</h3>
-          <b v-if="errors > 0">{{errors}} errors...</b>
+          <b v-if="errors > 0">{{ errors }} errors...</b>
           <br />
           <br />
-          Press SPACE to play again
+          Press <pre>SPACE</pre> to play again
         </div>
       </v-col>
     </v-row>
@@ -26,17 +26,25 @@
 <script>
 import LetterCarousel from "@/components/LetterCarousel.vue";
 import Keyboard from "@/components/Keyboard.vue";
+import { useSound } from "@vueuse/sound";
+import punch from "@/assets/punch.mp3";
 export default {
   name: "Home",
+  setup() {
+    const { play } = useSound(punch);
+    return { play };
+  },
   mounted() {
-    document.addEventListener("keydown", (e) => {
+    document.addEventListener("keydown", async (e) => {
       const { key } = e;
       if (key === " ") {
         this.$store.dispatch("restart");
         return;
       }
-
-      this.$store.dispatch("handleKeyDown", key);
+      const correct = await this.$store.dispatch("handleKeyDown", key);
+      if (correct) {
+        this.play();
+      }
     });
   },
   computed: {
@@ -63,6 +71,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.hello {
+  max-width: 800px !important;
+}
 .game-header {
   height: 300px;
 }

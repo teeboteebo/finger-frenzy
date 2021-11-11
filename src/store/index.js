@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
-
+// import { useSound } from '@vueuse/sound';
+// import punch from '@/assets/punch.mp3'
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -43,11 +44,11 @@ export default new Vuex.Store({
         }
         // play nice sound
         const nextLetter = context.state.alphabet[context.state.alphabet.indexOf(context.state.currentLetter) + 1];
-
         context.commit('setCurrentLetter', nextLetter);
-      } else {
-        context.commit('setErrors', context.state.errors + 1)
+        return true;
       }
+      context.commit('setErrors', context.state.errors + 1)
+      return false;
     },
     endGame(context) {
       //play nicer sound
