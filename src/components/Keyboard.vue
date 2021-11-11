@@ -1,12 +1,12 @@
 <template>
-  <div>
-    <v-row v-for="(row, i) in layout" :key="`row_${i}`" style="">
+  <div class="keyboard">
+    <div class="d-flex" v-for="(row, i) in layout" :key="`row_${i}`" style="">
       <QuarterSpacer
         v-for="(spacer, spacerIndex) in i"
         :key="`spacer_${spacerIndex}`"
       />
       <Key :keyName="key" v-for="key in row" :key="key" />
-    </v-row>
+    </div>
   </div>
 </template>
 <script>
@@ -30,3 +30,9 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.keyboard {
+  max-width: 800px;
+  margin: 0 auto;
+}
+</style>

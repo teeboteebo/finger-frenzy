@@ -10,6 +10,7 @@ export default new Vuex.Store({
     timeStarted: null,
     timeEnded: null,
     gameFinished: false,
+    errors: 0
   },
   mutations: {
     setCurrentLetter(state, letter) {
@@ -23,7 +24,10 @@ export default new Vuex.Store({
     },
     setGameFinished(state, bool) {
       state.gameFinished = !!bool;
-    }
+    },
+    setErrors(state, val) {
+      state.errors = val;
+    },
   },
   actions: {
     handleKeyDown(context, key) {
@@ -35,24 +39,28 @@ export default new Vuex.Store({
         }
         if (context.state.currentLetter === 'Z') {
           context.dispatch('endGame');
-          return
+          return;
         }
         // play nice sound
-        const nextLetter = context.state.alphabet[context.state.alphabet.indexOf(context.state.currentLetter) + 1]
+        const nextLetter = context.state.alphabet[context.state.alphabet.indexOf(context.state.currentLetter) + 1];
 
-        context.commit('setCurrentLetter', nextLetter)
+        context.commit('setCurrentLetter', nextLetter);
+      } else {
+        context.commit('setErrors', context.state.errors + 1)
       }
     },
     endGame(context) {
       //play nicer sound
       context.commit('setTimeEnded', new Date().getTime());
-      context.commit('setGameFinished', true)
+      context.commit('setGameFinished', true);
     },
     restart(context) {
-      context.commit('setCurrentLetter', 'A')
+      context.commit('setCurrentLetter', 'A');
       context.commit('setTimeStarted', null);
       context.commit('setTimeEnded', null);
-      context.commit('setGameFinished', false)
+      context.commit('setGameFinished', false);
+      context.commit('setErrors', 0)
+
     },
   },
 });

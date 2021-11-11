@@ -5,8 +5,14 @@
         <!-- <div>Time: {{ timeElapsed }}ms</div> -->
         <LetterCarousel />
       </v-col>
-      <v-col v-else class="d-flex align-center justify-center">
-        WOW! {{ totalTime }}s
+      <v-col v-else class="d-flex align-center justify-center text-center">
+        <div>
+          <h3>WOW! {{ totalTime }}s</h3>
+          <b v-if="errors > 0">{{errors}} errors...</b>
+          <br />
+          <br />
+          Press SPACE to play again
+        </div>
       </v-col>
     </v-row>
     <v-row>
@@ -34,6 +40,9 @@ export default {
     });
   },
   computed: {
+    errors() {
+      return this.$store.state.errors;
+    },
     gameFinished() {
       return this.$store.state.gameFinished;
     },

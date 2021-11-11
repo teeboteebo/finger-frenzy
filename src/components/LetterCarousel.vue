@@ -49,7 +49,7 @@ export default {
       const { alphabet } = this.$store.state;
       const after = [...alphabet].slice(
         alphabet.indexOf(this.currentLetter) + 1,
-        -1
+        alphabet.length
       );
 
       return after;
