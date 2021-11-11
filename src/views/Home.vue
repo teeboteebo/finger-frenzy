@@ -6,17 +6,21 @@
           <LetterCarousel />
           <br />
           <div class="d-flex align-center justify-center">
-            <pre class="d-block">{{ timeElapsed }}s</pre>
+            {{ timeElapsed }}s
           </div>
         </div>
       </v-col>
       <v-col v-else class="d-flex align-center justify-center text-center">
-        <pre class="text-center d-block">
+        <div>
           <h3>🎉{{ timeElapsed }}s🎉</h3>
-          <b class="d-block"><span v-if="errors > 0">{{ errors }} errors...</span><span v-else>Flawless.</span></b>
           <br />
-          <pre>Press SPACE to play again</pre>
-        </pre>
+          <b class="d-block"
+            ><span v-if="errors > 0">{{ errors }} errors...</span
+            ><span v-else>Flawless.</span></b
+          >
+          <br />
+          Press SPACE to play again
+        </div>
       </v-col>
     </v-row>
 
