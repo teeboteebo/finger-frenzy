@@ -29,17 +29,18 @@
         <Keyboard />
       </v-col>
     </v-row>
-    <v-row v-if="gameFinished">
-      <v-col>
-        <table>
+    <v-row>
+      <v-col class="d-flex justify-center flex-column align-center">
+        <h2 class="flex-1">HIGHSCORE</h2> <br>
+        <table >
           <thead>
-            <td>#</td>
-            <td>Score</td>
+            <td><b>#</b></td>
+            <td><b>Score</b></td>
           </thead>
           <tbody>
             <tr v-for="(score, i) in highscore" :key="`${score}_${i}`">
-              <td>{{i+1}}</td>
-              <td>{{score}}s</td>
+              <td style="min-width: 100px;">{{ i+1 }}.</td>
+              <td>{{ score / 1000 }}s</td>
             </tr>
           </tbody>
         </table>
@@ -63,6 +64,7 @@ export default {
     document.addEventListener("keydown", async (e) => {
       const { key } = e;
       if (key === " ") {
+        e.preventDefault() // prevent scrolling
         this.$store.dispatch("restart");
         return;
       }

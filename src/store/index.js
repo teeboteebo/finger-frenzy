@@ -44,9 +44,11 @@ export default new Vuex.Store({
   },
   actions: {
     addNewHighscore(context, score) {
-      const newHighscore = [...context.state.highscore, score].sort((a, b) => a - b)
+      const oldList = context.state.highscore
+      oldList.push(score)
+      const newHighscore = oldList.sort((a, b) => a - b)
       context.commit('setHighscore', newHighscore)
-      localStorage.highscore = newHighscore
+      localStorage.highscore = JSON.stringify(newHighscore)
     },
     startTimer(context) {
       context.state.interval = setInterval(() => {
@@ -83,11 +85,15 @@ export default new Vuex.Store({
     },
     endGame(context) {
       const endTime = new Date().getTime();
-      context.dispatch('clearTimer');
       const score = endTime - context.state.timeStarted
+      const errors = context.state.errors
+      if (errors === 0) {
+        context.dispatch('addNewHighscore', score);
+      }
+      context.dispatch('clearTimer');
       context.commit('setTimeEnded', endTime);
       context.commit('setTimeElapsed', score),
-        context.dispatch('addNewHighscore', score);
+      
       context.commit('setGameFinished', true);
     },
     restart(context) {
