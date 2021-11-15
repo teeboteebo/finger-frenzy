@@ -29,6 +29,22 @@
         <Keyboard />
       </v-col>
     </v-row>
+    <v-row v-if="gameFinished">
+      <v-col>
+        <table>
+          <thead>
+            <td>#</td>
+            <td>Score</td>
+          </thead>
+          <tbody>
+            <tr v-for="(score, i) in highscore" :key="`${score}_${i}`">
+              <td>{{i+1}}</td>
+              <td>{{score}}s</td>
+            </tr>
+          </tbody>
+        </table>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -57,6 +73,9 @@ export default {
     });
   },
   computed: {
+    highscore() {
+      return this.$store.state.highscore;
+    },
     errors() {
       return this.$store.state.errors;
     },

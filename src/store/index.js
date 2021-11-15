@@ -14,8 +14,12 @@ export default new Vuex.Store({
     gameFinished: false,
     errors: 0,
     interval: null,
+    highscore: localStorage.highscore ? JSON.parse(localStorage.highscore) : [],
   },
   mutations: {
+    setHighscore(state, highArr) {
+      state.highArr = highArr;
+    },
     setCurrentLetter(state, letter) {
       state.currentLetter = letter;
     },
@@ -39,6 +43,11 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    addNewHighscore(context, score) {
+      const newHighscore = [...context.state.highscore, score].sort((a, b) => a - b)
+      context.commit('setHighscore', newHighscore)
+      localStorage.highscore = newHighscore
+    },
     startTimer(context) {
       context.state.interval = setInterval(() => {
         const timeElapsed = new Date().getTime() - context.state.timeStarted;
@@ -75,9 +84,10 @@ export default new Vuex.Store({
     endGame(context) {
       const endTime = new Date().getTime();
       context.dispatch('clearTimer');
-
+      const score = endTime - context.state.timeStarted
       context.commit('setTimeEnded', endTime);
-      context.commit('setTimeElapsed', endTime - context.state.timeStarted)
+      context.commit('setTimeElapsed', score),
+        context.dispatch('addNewHighscore', score);
       context.commit('setGameFinished', true);
     },
     restart(context) {
